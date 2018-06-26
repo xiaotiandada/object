@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>选项卡</title>
+  <style>
+    .btn{
+      background: red;
+      color: #fff;
+    }
+    .box div{
+      width: 100px;
+      height: 100px;
+      border: solid 1px #000;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- 选项卡 -->
+  <div id="box" class="box">
+    <input type="button" value="选项卡1" class="btn">
+    <input type="button" value="选项卡2">
+    <input type="button" value="选项卡3">
+    <div style="display:block;">1111</div>
+    <div>2222</div>
+    <div>3333</div>
+  </div>
+
+  <!-- 定时选项卡 -->
+  <div id="box2" class="box">
+    <input type="button" value="选项卡1" class="btn">
+    <input type="button" value="选项卡2">
+    <input type="button" value="选项卡3">
+    <div style="display:block;">1111</div>
+    <div>2222</div>
+    <div>3333</div>
+  </div>
+
+  <script>
+  
+  class Tab {
+      constructor (id) {
+          this.oBox = document.getElementById(id)
+          this.aBtn = this.oBox.getElementsByTagName('input')
+          this.aDiv = this.oBox.getElementsByTagName('div')
+
+          this.iNow = 0
+          this.init()
+      }
+
+      init() {
+          for (let i = 0; i < this.aBtn.length; i++) {
+              this.aBtn[i].onclick = function(){
+                  this.hide()
+                  this.show(i)
+              }.bind(this)
+          }
+      }
+
+      hide(){
+          for (let i = 0; i < this.aBtn.length; i++) {
+              this.aBtn[i].className = ''
+              this.aDiv[i].style.display = 'none'
+          }
+      }
+
+      show(index) {
+          this.aBtn[index].className = 'btn'
+          this.aDiv[index].style.display = 'block'
+      }
+  }
+
+  class AutoTab extends Tab {
+      constructor(id) {
+          super(id)
+
+          setInterval(this.next.bind(this), 1000)
+      }
+
+      next(){
+          this.iNow++
+          if(this.iNow == this.aBtn.length) {
+              this.iNow = 0
+          }
+          this.hide()
+          this.show(this.iNow)
+      }
+  }
+
+
+  window.onload = function(){
+      var tab = new Tab('box')
+      var Atotb = new AutoTab('box2')
+  }
+  </script>
+</body>
+</html>
